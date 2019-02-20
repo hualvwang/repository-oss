@@ -105,6 +105,21 @@ public class OssStorageService extends AbstractComponent {
 
 	public OSSObject getObject(String bucketName, String key) throws OSSException, ClientException {
 		return SocketAccess.doPrivilegedException(() -> {
+
+
+			ObjectMetadata objectMetadata = this.client.getObjectMetadata(bucketName, key);
+
+			// check whether the object is archive class
+			StorageClass storageClass = objectMetadata.getObjectStorageClass();
+			if (storageClass == StorageClass.Archive) {
+				// restore object
+				this.client.restoreObject(bucketName, key);
+				// wait for restore completed
+				do {
+					Thread.sleep(1000);
+					objectMetadata = this.client.getObjectMetadata(bucketName, key);
+				} while (!objectMetadata.isRestoreCompleted());
+			}
 			logger.info("try to get: " + bucketName + ":" + key);
 			OSSObject result = this.client.getObject(bucketName, key);
 			logger.info(result);
