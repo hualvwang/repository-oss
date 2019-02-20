@@ -3,7 +3,7 @@ plugins {
     id 'eclipse'
 }
 
-version '6.4.1'
+version '6.2.4'
 
 defaultTasks 'clean', 'build', 'libs', 'copyResources', 'zip'
 
@@ -54,15 +54,20 @@ jar {
     }
 }
 
+tasks.withType(Jar) {
+    destinationDir = file("$buildDir/libs/elasticsearch")
+}
+
+
 task libs(type: Copy) {
     from configurations.localDeps
     from configurations.localRuntimes
-    into "$buildDir/libs"
+    into "$buildDir/libs/elasticsearch"
 }
 
 task copyResources(type: Copy){
 	from 'src/main/resources'
-	into "$buildDir/libs"
+	into "$buildDir/libs/elasticsearch"
 }
 
 task zip(type: Zip) {

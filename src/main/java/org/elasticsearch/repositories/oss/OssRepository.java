@@ -51,8 +51,10 @@ public class OssRepository extends BlobStoreRepository {
 		
 		blobStore = new OssBlobStore(env.settings(), bucket, ossStorageService);
 	}
-	
-	@Override
+
+
+
+	// @Override
     protected OssBlobStore createBlobStore() {
 		final OssBlobStore blobStore = new OssBlobStore(environment.settings(), bucket, storageService);
 	    return blobStore;
