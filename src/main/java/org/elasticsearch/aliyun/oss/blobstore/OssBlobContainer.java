@@ -126,12 +126,12 @@ public class OssBlobContainer extends AbstractBlobContainer {
         }
 
     }
-
-    @Override
-    public DeleteResult delete() throws IOException {
-        blobStore.delete(path());
-        return new DeleteResult(0, 0);
-    }
+//
+//    @Override
+//    public DeleteResult delete() throws IOException {
+//        blobStore.delete(path());
+//        return new DeleteResult(0, 0);
+//    }
 
     /**
      * Lists all blobs in the container.

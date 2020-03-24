@@ -6,7 +6,7 @@
 
     <groupId>com.opensearch.es</groupId>
     <artifactId>elasticsearch-repository-oss</artifactId>
-    <version>7.6.0</version>
+    <version>6.8.0</version>
 
 
     <properties>

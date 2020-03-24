@@ -37,7 +37,8 @@ public class OssRepository extends BlobStoreRepository {
 
     public OssRepository(RepositoryMetaData metadata, Environment environment,
                          NamedXContentRegistry namedXContentRegistry, ThreadPool threadPool, OssService ossService) {
-        super(metadata, getSetting(OssClientSettings.COMPRESS, metadata), namedXContentRegistry, threadPool);
+//        super(metadata, getSetting(OssClientSettings.COMPRESS, metadata), namedXContentRegistry, threadPool);
+        super(metadata, environment.settings(), namedXContentRegistry);
         this.ossService = ossService;
         String ecsRamRole = OssClientSettings.ECS_RAM_ROLE.get(metadata.settings()).toString();
         if (StringUtils.isNotEmpty(ecsRamRole)) {

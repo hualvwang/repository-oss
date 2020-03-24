@@ -42,10 +42,10 @@ public class OssRepositoryTest extends ESBlobStoreRepositoryIntegTestCase {
                         ByteSizeUnit.MB)));
     }
 
-    @Override
-    protected String repositoryType() {
-        return null;
-    }
+//    @Override
+//    protected String repositoryType() {
+//        return null;
+//    }
 
     public static class MockOssRepositoryPlugin extends OssRepositoryPlugin {
         @Override

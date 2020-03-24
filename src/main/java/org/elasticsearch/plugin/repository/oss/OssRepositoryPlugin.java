@@ -47,12 +47,12 @@ public class OssRepositoryPlugin extends Plugin implements RepositoryPlugin {
     }
 
 
-    @Override
-    public Map<String, Repository.Factory> getRepositories(Environment env, NamedXContentRegistry namedXContentRegistry,
-                                                           ThreadPool threadPool) {
-        return Collections.singletonMap(OssRepository.TYPE,
-                (metadata) -> new OssRepository(metadata, env, namedXContentRegistry,threadPool, createStorageService(metadata)));
-    }
+//    @Override
+//    public Map<String, Repository.Factory> getRepositories(Environment env, NamedXContentRegistry namedXContentRegistry,
+//                                                           ThreadPool threadPool) {
+//        return Collections.singletonMap(OssRepository.TYPE,
+//                (metadata) -> new OssRepository(metadata, env, namedXContentRegistry,threadPool, createStorageService(metadata)));
+//    }
 
 
     @Override
