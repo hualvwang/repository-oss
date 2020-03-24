@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<assembly>
+    <id>elasticsearch-repository-oss</id>
+    <formats>
+        <format>zip</format>
+    </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
+    <dependencySets>
+        <dependencySet>
+            <outputDirectory/>
+            <useProjectArtifact>true</useProjectArtifact>
+            <useTransitiveFiltering>true</useTransitiveFiltering>
+            <excludes>
+                <exclude>org.elasticsearch:elasticsearch</exclude>
+            </excludes>
+        </dependencySet>
+    </dependencySets>
+    <fileSets>
+        <fileSet>
+            <directory>src/main/resources</directory>
+            <outputDirectory/>
+            <includes>
+                <include>log4j2.properties</include>
+                <include>log4j.xml</include>
+                <include>plugin-descriptor.properties</include>
+                <include>plugin-security.policy</include>
+            </includes>
+            <filtered>true</filtered>
+        </fileSet>
+    </fileSets>
+</assembly>
