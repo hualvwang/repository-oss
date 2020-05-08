@@ -16,6 +16,7 @@ import org.elasticsearch.aliyun.oss.service.OssService;
 import org.elasticsearch.aliyun.oss.service.OssServiceImpl;
 import org.elasticsearch.aliyun.oss.service.exception.CreateStsOssClientException;
 import org.elasticsearch.cluster.metadata.RepositoryMetaData;
+import org.elasticsearch.cluster.service.ClusterService;
 import org.elasticsearch.common.settings.Setting;
 import org.elasticsearch.common.xcontent.NamedXContentRegistry;
 import org.elasticsearch.env.Environment;
@@ -46,14 +47,11 @@ public class OssRepositoryPlugin extends Plugin implements RepositoryPlugin {
         return new OssServiceImpl(metadata);
     }
 
-
-//    @Override
-//    public Map<String, Repository.Factory> getRepositories(Environment env, NamedXContentRegistry namedXContentRegistry,
-//                                                           ThreadPool threadPool) {
-//        return Collections.singletonMap(OssRepository.TYPE,
-//                (metadata) -> new OssRepository(metadata, env, namedXContentRegistry,threadPool, createStorageService(metadata)));
-//    }
-
+    @Override
+    public Map<String, Repository.Factory> getRepositories(Environment env, NamedXContentRegistry namedXContentRegistry, ClusterService clusterService) {
+        return Collections.singletonMap(OssRepository.TYPE,
+                (metadata) -> new OssRepository(metadata, env, namedXContentRegistry, createStorageService(metadata), clusterService));
+    }
 
     @Override
     public List<Setting<?>> getSettings() {

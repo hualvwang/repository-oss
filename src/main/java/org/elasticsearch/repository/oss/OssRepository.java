@@ -8,6 +8,7 @@ import org.elasticsearch.aliyun.oss.blobstore.OssBlobStore;
 import org.elasticsearch.aliyun.oss.service.OssClientSettings;
 import org.elasticsearch.aliyun.oss.service.OssService;
 import org.elasticsearch.cluster.metadata.RepositoryMetaData;
+import org.elasticsearch.cluster.service.ClusterService;
 import org.elasticsearch.common.Strings;
 import org.elasticsearch.common.blobstore.BlobPath;
 import org.elasticsearch.common.blobstore.BlobStore;
@@ -36,9 +37,9 @@ public class OssRepository extends BlobStoreRepository {
     private final OssService ossService;
 
     public OssRepository(RepositoryMetaData metadata, Environment environment,
-                         NamedXContentRegistry namedXContentRegistry, ThreadPool threadPool, OssService ossService) {
+                         NamedXContentRegistry namedXContentRegistry, OssService ossService, ClusterService clusterService) {
 //        super(metadata, getSetting(OssClientSettings.COMPRESS, metadata), namedXContentRegistry, threadPool);
-        super(metadata, environment.settings(), namedXContentRegistry);
+        super(metadata, metadata.settings().getAsBoolean("compress", false), namedXContentRegistry, clusterService);
         this.ossService = ossService;
         String ecsRamRole = OssClientSettings.ECS_RAM_ROLE.get(metadata.settings()).toString();
         if (StringUtils.isNotEmpty(ecsRamRole)) {

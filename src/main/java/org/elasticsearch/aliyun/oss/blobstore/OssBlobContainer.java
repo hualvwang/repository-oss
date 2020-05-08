@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
@@ -90,7 +91,7 @@ public class OssBlobContainer extends AbstractBlobContainer {
                 throw new FileAlreadyExistsException(
                     "blob [" + blobName + "] already exists, cannot overwrite");
             } else {
-                deleteBlobIgnoringIfNotExists(blobName);
+                deleteBlobsIgnoringIfNotExists(Arrays.asList(blobName));
             }
         }
         logger.trace("writeBlob({}, stream, {})", blobName, blobSize);
@@ -103,35 +104,27 @@ public class OssBlobContainer extends AbstractBlobContainer {
     }
 
 
-    /**
-     * Deletes a blob with giving name, if the blob exists.  If the blob does not exist, this method throws an
-     * IOException.
-     *
-     * @param blobName The name of the blob to delete.
-     * @throws NoSuchFileException if the blob does not exist
-     * @throws IOException if the blob exists but could not be deleted.
-     */
     @Override
-    public void deleteBlob(String blobName) throws IOException {
-        logger.trace("deleteBlob({})", blobName);
-        if (!blobExists(blobName)) {
-            throw new NoSuchFileException("Blob [" + blobName + "] does not exist");
+    public void deleteBlobsIgnoringIfNotExists(List<String> blobs) throws IOException {
+        for (String blobName : blobs) {
+            logger.trace("deleteBlob({})", blobName);
+            if (blobExists(blobName)) {
+                try {
+                    blobStore.deleteBlob(buildKey(blobName));
+                } catch (OSSException | ClientException e) {
+                    logger.warn("can not access [{}] : {}", blobName,
+                            e.getMessage());
+                    throw new IOException(e);
+                }
+            }
         }
-        try {
-            blobStore.deleteBlob(buildKey(blobName));
-        } catch (OSSException | ClientException e) {
-            logger.warn("can not access [{}] : {}", blobName,
-                e.getMessage());
-            throw new IOException(e);
-        }
-
     }
-//
-//    @Override
-//    public DeleteResult delete() throws IOException {
-//        blobStore.delete(path());
-//        return new DeleteResult(0, 0);
-//    }
+
+    @Override
+    public DeleteResult delete() throws IOException {
+        blobStore.delete(path());
+        return new DeleteResult(0, 0);
+    }
 
     /**
      * Lists all blobs in the container.
